@@ -1,0 +1,23 @@
+.title-container {
+    display: grid;
+    grid-template-columns: 50px auto 50px ;
+}
+
+.title {
+    text-align: center;
+    padding-top: 20px;
+}
+.title > h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.rank {
+    text-align: right;
+    padding: 0;
+}
+.rank > img {
+    height: 35px;
+}
+
+

@@ -1,0 +1,71 @@
+main {
+  height: 100vh;
+  display:flex;
+}
+
+.main-container {
+  width:360px;
+  height: 379px;
+  margin: auto;
+  background-color: #2B283A;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 5px 5px 5px #a5a5a5;  
+}
+
+.main-container > h6 {
+  position:absolute;
+  right: 5px;
+  bottom: -25px;
+}
+.game {
+  width: 320px;
+  height: 320px;
+  background-color: #F5F5F5;
+  color: black;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-center;
+  padding: 0;
+}
+
+.game > button {
+  width: 90px;
+  height: 30px;
+  background-color: #5035FF;
+  color:white;
+  margin: auto auto 10px auto;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.game > StopWatch {
+  margin: auto;
+}
+
+.die-container {
+  margin: auto;
+  display:grid;
+  grid: auto/ auto auto auto auto auto;
+  grid-gap: 20px;
+}
+
+.instructions {
+  font-family: sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  margin-top: 0;
+  text-align: center;
+  margin:5px;
+}
+
+.icon {
+  width:70px;
+  position: absolute;
+  top: -17px;
+  left:-15px;
+}
+
