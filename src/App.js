@@ -15,6 +15,8 @@ function App() {
   const [tenzies, setTenzies] = useState(false);
   // Sopwatch state
   const [time, setTime] = useState(0);
+  // page loaded
+  const[loaded, setLoaded] = useState(true);
   // Window size state
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
@@ -42,21 +44,23 @@ function App() {
 
   // Stopwatch
   useEffect(() => {
-    console.log(tenzies);
+    console.log(loaded);
     let stopWatch = null;
-
     if(!tenzies){
       stopWatch = setInterval(() => {
         setTime(prevTime => prevTime + 7);
       },7); 
     } else {
       clearInterval(stopWatch);
+    } 
+    if(loaded){
+      clearInterval(stopWatch);
     }
     return () => {
       clearInterval(stopWatch);
     };
 
-  }, [tenzies]);
+  }, [tenzies, loaded]);
 
   // held the dice
   function holdDice(diceId) {
@@ -87,9 +91,11 @@ function App() {
       }}));
     } else {
       setTenzies(false);
+      setLoaded(false);
       setDices(allNewDice());
       setTime(0); 
     }
+    setLoaded(false);
   }
 
   // mount the dices
@@ -99,6 +105,8 @@ function App() {
       value={die.value}
       isHeld={die.isHeld}
       holdDice={() => holdDice(die.id)}
+      loaded={loaded}
+      tenzies={tenzies}
     />
       
   });
@@ -118,9 +126,9 @@ function App() {
             {dicesElements}
           </div>
           <StopWatch time={time}/>
-          <button onClick={rollDices}>{tenzies ? 'New Game' : 'Roll'}</button>
+          <button onClick={rollDices}>{(tenzies || loaded) ? 'New Game' : 'Roll'}</button>
         </div>
-        <h6>V 0.1b</h6>      
+        <h6>V 0.1.1b</h6>      
       </div>
     </main>
   );
