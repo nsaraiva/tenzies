@@ -47,8 +47,8 @@ function App() {
 
     if(!tenzies){
       stopWatch = setInterval(() => {
-        setTime(prevTime => prevTime + 1);
-      },1); 
+        setTime(prevTime => prevTime + 7);
+      },7); 
     } else {
       clearInterval(stopWatch);
     }
