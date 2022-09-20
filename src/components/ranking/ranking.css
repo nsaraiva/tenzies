@@ -1,0 +1,14 @@
+.modal-dialog {
+    height:100vh;
+    padding: 0;
+    margin:0;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal-content {
+    height: 300px;
+    width: 80px;
+    margin: 0;
+}

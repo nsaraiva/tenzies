@@ -1,0 +1,4 @@
+.scores {
+    display: grid;
+    grid-template-columns:70px 105px 150px auto;
+}
