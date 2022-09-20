@@ -78,15 +78,8 @@ function App() {
 
   }, [tenzies, loaded]);
 
-  useEffect(() => {
+  useEffect(() =>{
     if(tenzies){
-      const newTime = [{
-        name: '', 
-        time: time, 
-        date: new Date().toLocaleDateString(), 
-        media: ''
-      }]
-
       setRanking(prevRanking => [...prevRanking, {
         name: '', 
         time: time, 
@@ -95,14 +88,24 @@ function App() {
         }
       ]);  
 
-    // const oRanking =  ranking.sort((x, y) => {
-    //   return x.time - y.time;
-    // });    
+    }
+  },[tenzies, time]); 
 
-    // oRanking.pop();
+  useEffect(() => {
+    setRanking(prevRanking => prevRanking.sort((x, y) => {
+      return x.time - y.time;
+      })
+    );
+  },[tenzies]);
 
+  useEffect(() => {
+    if(ranking.length > 5){
+      setRanking(prevRanking => prevRanking.slice(0,5));
       handleModal();
     }
+
+  },[ranking]);
+    
     // fetch('https://api.jsonbin.io/v3/b/6324cdf2e13e6063dcaaa977', {
     //   method: 'PUT',
     //   headers: {
@@ -111,10 +114,10 @@ function App() {
     //   }
     //   body: JSON.stringify({})
     // })
-  }, [tenzies]);
 
   // Change Modal state
   function handleModal() {
+    console.log('handleModal');
     setShow(prevShow => !prevShow);
   }
 
