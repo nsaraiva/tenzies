@@ -2,15 +2,14 @@ import {useState, useEffect} from 'react';
 
 import './content.css';
 
-function Content(props) {
+function Content({show, ranking, setRanking, rankingButton, 
+    setRankingButton, }) {
 
     const [formData, setFormData] = useState({
         newTime: ''
     });
-
-    const [ranking, setRanking] = useState(props.data);
-
-
+    
+    // Focus on the new time 
     useEffect(() => {
         const names = document.getElementsByTagName('input');
         for(let i = 0; i < names.length; i++){
@@ -18,17 +17,17 @@ function Content(props) {
                 names[i].focus();
             }
         }   
+    },[]);
 
-    },[props.time]);
-
-    useEffect(() => {
-        setRanking(prevRanking => prevRanking.map(x => {
-            return x.name === 'newTime' ? 
-                {...x, name: formData.newTime} : x;           
-        })
-        );
-        console.log('formdata: ' + formData.newTime);
-    },[formData]);
+    useEffect(() => {    
+        if(!show){    
+            setRanking(prevRanking => prevRanking.map(x => {
+                return x.name === 'newTime' ? 
+                    {...x, name: formData.newTime} : x;           
+                })
+            );     
+        }                 
+    },[show, formData.newTime, setRanking, ranking]);
 
     const handleChange = (e) => {
         const{name, value} = e.target;
@@ -40,8 +39,7 @@ function Content(props) {
         });
     };
 
-    console.log('Ranking: ' + ranking);
-    const rankingList = props.data.map((score, index) => {
+    const rankingList = ranking.map((score, index) => {
         return (
             <div className="scores" key={index}>
             <h6>#{index + 1}</h6>

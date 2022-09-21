@@ -28,9 +28,10 @@ function App() {
     height: window.innerHeight
   });
 
-  // get ranking
+
+  // get ranking from JSONBin
   useEffect(() => {
-    fetch('https://api.jsonbin.io/v3/b/6324cdf2e13e6063dcaaa977', {
+    fetch('https://api.jsonbin.io/v3/b/632b0b605c146d63caa37183', {
       method: 'GET',      
       headers: {
         'X-MASTER-KEY': '$2b$10$CSXCVVHBA5ndyu5/nybMeeOY0zDKv0RULv8fV24vtFP.faxVTHfu.',
@@ -38,8 +39,29 @@ function App() {
       }
     })
     .then(response => response.json())
-    .then(data => setRanking(data.record.rank))
+    .then(data => setRanking(data.record.ranking))
   },[])
+
+  // Updating ranking on JSONBin
+  // useEffect(() => {
+  //   console.log(saveRanking, ranking);
+  //   if(saveRanking){
+  //     fetch('https://api.jsonbin.io/v3/b/632b0b605c146d63caa37183', {
+  //       method: 'PUT',      
+  //       headers: {
+  //         'X-MASTER-KEY': '$2b$10$CSXCVVHBA5ndyu5/nybMeeOY0zDKv0RULv8fV24vtFP.faxVTHfu.',          
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //           ranking: ranking
+  //       })
+  //     })
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
+
+  //     setSaveRanking(false);
+  //   }
+  // },);
 
   // Checks that the dices are all the same and held, to win the game
   useEffect(() => {
@@ -78,6 +100,7 @@ function App() {
 
   }, [tenzies, loaded]);
 
+  // Add new time to ranking
   useEffect(() =>{
     if(tenzies){
       setRanking(prevRanking => [...prevRanking, {
@@ -91,6 +114,7 @@ function App() {
     }
   },[tenzies, time]); 
 
+  // Sorting the ranking
   useEffect(() => {
     setRanking(prevRanking => prevRanking.sort((x, y) => {
       return x.time - y.time;
@@ -98,27 +122,18 @@ function App() {
     );
   },[tenzies]);
 
+  // Only 5 items at the ranking
   useEffect(() => {
-    if(ranking.length > 5){
-      setRanking(prevRanking => prevRanking.slice(0,5));
-      handleModal();
-    }
-
-  },[ranking]);
+    if(tenzies){
+      if(ranking.length > 5){
+        setRanking(prevRanking => prevRanking.slice(0,5));
+        handleModal('cancel');
+      }
+  }
+  },[ranking, tenzies]);
     
-    // fetch('https://api.jsonbin.io/v3/b/6324cdf2e13e6063dcaaa977', {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'X-MASTER-KEY': '$2b$10$CSXCVVHBA5ndyu5/nybMeeOY0zDKv0RULv8fV24vtFP.faxVTHfu.',
-    //   }
-    //   body: JSON.stringify({})
-    // })
-
   // Change Modal state
-  
-  function handleModal() {
-    console.log('handleModal');
+   function handleModal() {
     setShow(prevShow => !prevShow);
   }
 
@@ -190,7 +205,8 @@ function App() {
         </div>
         <h6 className="version">V 0.1.1b</h6>      
       </div>
-        <Ranking show={show} handleModal={handleModal} data={ranking}  />
+        <Ranking show={show} handleModal={handleModal}         
+          ranking={ranking} setRanking={setRanking} />
     </main>
   );
 }
