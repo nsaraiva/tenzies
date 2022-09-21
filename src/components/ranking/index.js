@@ -19,8 +19,8 @@ function Ranking(props) {
                 <Content data={props.data} />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={props.handleModal}>Close</Button>
                 <Button onClick={props.handleModal}>Save</Button>
+                <Button onClick={props.handleModal}>Cancel</Button>
             </Modal.Footer>
         </Modal>
     );

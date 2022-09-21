@@ -8,7 +8,18 @@
 }
 
 .modal-content {
-    height: 300px;
-    width: 80px;
+    height: 350px;
     margin: 0;
 }
+
+/* .modal-body {
+    width: 150px;
+}
+
+.modal-header {
+    width: 300px;
+}
+
+.modal-footer {
+    width: 300px;
+} */

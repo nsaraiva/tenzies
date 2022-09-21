@@ -81,7 +81,7 @@ function App() {
   useEffect(() =>{
     if(tenzies){
       setRanking(prevRanking => [...prevRanking, {
-        name: '', 
+        name: 'newTime', 
         time: time, 
         date: new Date().toLocaleDateString(), 
         media: ''
@@ -116,6 +116,7 @@ function App() {
     // })
 
   // Change Modal state
+  
   function handleModal() {
     console.log('handleModal');
     setShow(prevShow => !prevShow);
@@ -189,7 +190,7 @@ function App() {
         </div>
         <h6 className="version">V 0.1.1b</h6>      
       </div>
-        <Ranking show={show} handleModal={handleModal} data={ranking} />
+        <Ranking show={show} handleModal={handleModal} data={ranking}  />
     </main>
   );
 }
