@@ -12,8 +12,10 @@ function App() {
 
   // Dices Values State
   const [dices, setDices] = useState(allNewDice());
-  // You won!
+  // You finish!
   const [tenzies, setTenzies] = useState(false);
+  // You ranked!
+  const [ranked, setRanked] = useState(false);
   // Sopwatch state
   const [time, setTime] = useState(0);
   // page loaded
@@ -135,6 +137,7 @@ function App() {
       if (ranking.some(item => item.name === 'newTime') &&
         ranking.length === 5) {
         handleModal('tenzies');
+        setRanked(true);
       }
   }
   },[ranking, tenzies]);
@@ -176,7 +179,8 @@ function App() {
       setTenzies(false);
       setLoaded(false);
       setDices(allNewDice());
-      setTime(0); 
+      setTime(0);
+      setRanked(false);
     }
     setLoaded(false);
   }
@@ -196,7 +200,7 @@ function App() {
 
   return (
     <main>
-      {tenzies && <Confetti 
+      {ranked && <Confetti 
         width={windowSize.width} 
         height={windowSize.height}/>}
       <div className="main-container">
