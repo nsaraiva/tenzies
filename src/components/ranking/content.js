@@ -2,13 +2,22 @@ import {useState, useEffect} from 'react';
 
 import './content.css';
 
-function Content({show, ranking, setRanking, rankingButton, 
-    setRankingButton, }) {
+function Content({ranking, setRanking, buttonTypeClicked, setUpdateRanking}) {
 
     const [formData, setFormData] = useState({
         newTime: ''
     });
     
+    function formatTime(time) {
+        const milliseconds = time;
+        const seconds =  Math.floor((milliseconds/1000) % 60);
+        const minutes = Math.floor(((milliseconds/1000)/60) % 60);
+        return(
+            `${minutes < 10 ? '0'+minutes : minutes}:
+            ${seconds < 10 ? '0'+seconds : seconds}.
+            ${String(milliseconds).slice(-2)}`
+        );
+    }
     // Focus on the new time 
     useEffect(() => {
         const names = document.getElementsByTagName('input');
@@ -20,14 +29,24 @@ function Content({show, ranking, setRanking, rankingButton,
     },[]);
 
     useEffect(() => {    
-        if(!show){    
+        if(buttonTypeClicked === 'save'){    
             setRanking(prevRanking => prevRanking.map(x => {
                 return x.name === 'newTime' ? 
                     {...x, name: formData.newTime} : x;           
                 })
-            );     
-        }                 
-    },[show, formData.newTime, setRanking, ranking]);
+            );
+             
+            setUpdateRanking(true);
+        } else if(buttonTypeClicked === 'cancel'){
+            setRanking(prevRanking => prevRanking.map(x => {
+                return x.name === 'newTime' ? 
+                    {...x, name: ''} : x;           
+                })
+            );
+
+            setUpdateRanking(true);
+        }
+    },[formData.newTime, setRanking, buttonTypeClicked, setUpdateRanking]);
 
     const handleChange = (e) => {
         const{name, value} = e.target;
@@ -49,11 +68,10 @@ function Content({show, ranking, setRanking, rankingButton,
                     id="newTime"
                     onChange={handleChange}
                     type="text" 
-                    value={formData.newTime}
-                    data-time={score.time} /> :
+                    value={formData.newTime} /> :
                 <h6>{score.name}</h6>
             }            
-            <h6>{score.time}</h6>
+            <h6>{formatTime(score.time)}</h6>
             <h6>{score.date}</h6>
             </div>            
         ); 

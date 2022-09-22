@@ -5,9 +5,11 @@ import './ranking.css';
 
 //
 
-function Ranking({show, handleModal,ranking, setRanking}) {
+function Ranking({show, handleModal,ranking, setRanking, 
+    buttonTypeClicked, setUpdateRanking}) {
     return(
-        <Modal show={show} onHide={handleModal} backdrop="static">
+        <Modal show={show} onHide={handleModal} 
+        backdrop={buttonTypeClicked !== 'trophy' ? 'static' : 'false'} >
             <Modal.Header closeButton>
             <div className="ranking-header">
                 <h2>Top 5 times</h2>
@@ -15,11 +17,14 @@ function Ranking({show, handleModal,ranking, setRanking}) {
             </Modal.Header>
             <Modal.Body>
 
-                <Content ranking={ranking} show={show} setRanking={setRanking} />
+                <Content ranking={ranking} setRanking={setRanking} 
+                    setUpdateRanking={setUpdateRanking} 
+                    buttonTypeClicked={buttonTypeClicked} />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={handleModal}>Save</Button>
-                <Button onClick={handleModal}>Cancel</Button>
+                {buttonTypeClicked !== 'trophy' &&  
+                    <Button onClick={() => handleModal('save')}>Save</Button>}
+                <Button onClick={() => handleModal('cancel')}>Cancel</Button>
             </Modal.Footer>
         </Modal>
     );

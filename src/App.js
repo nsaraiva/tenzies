@@ -20,6 +20,10 @@ function App() {
   const[loaded, setLoaded] = useState(true);
   // Modal state
   const [show, setShow] = useState(false);
+  // Modal button type clicked
+  const [buttonTypeClicked, setButtonTypeClicked] = useState('');
+  // Update ranking state
+  const [updateRanking, setUpdateRanking] = useState(false);
   // Ranking state
   const [ranking, setRanking] = useState([]);
   // Window size state
@@ -43,25 +47,25 @@ function App() {
   },[])
 
   // Updating ranking on JSONBin
-  // useEffect(() => {
-  //   console.log(saveRanking, ranking);
-  //   if(saveRanking){
-  //     fetch('https://api.jsonbin.io/v3/b/632b0b605c146d63caa37183', {
-  //       method: 'PUT',      
-  //       headers: {
-  //         'X-MASTER-KEY': '$2b$10$CSXCVVHBA5ndyu5/nybMeeOY0zDKv0RULv8fV24vtFP.faxVTHfu.',          
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({
-  //           ranking: ranking
-  //       })
-  //     })
-  //     .then(response => response.json())
-  //     .then(data => console.log(data))
+  useEffect(() => {
+    if(updateRanking && buttonTypeClicked === 'save'){
+      fetch('https://api.jsonbin.io/v3/b/632b0b605c146d63caa37183', {
+        method: 'PUT',      
+        headers: {
+          'X-MASTER-KEY': '$2b$10$CSXCVVHBA5ndyu5/nybMeeOY0zDKv0RULv8fV24vtFP.faxVTHfu.',          
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ranking: ranking
+        })
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
 
-  //     setSaveRanking(false);
-  //   }
-  // },);
+      setUpdateRanking(false);
+      setButtonTypeClicked('');
+    }
+  },[ranking, buttonTypeClicked, updateRanking]);
 
   // Checks that the dices are all the same and held, to win the game
   useEffect(() => {
@@ -110,7 +114,6 @@ function App() {
         media: ''
         }
       ]);  
-
     }
   },[tenzies, time]); 
 
@@ -123,18 +126,23 @@ function App() {
   },[tenzies]);
 
   // Only 5 items at the ranking
-  useEffect(() => {
+  useEffect(() =>  {
     if(tenzies){
       if(ranking.length > 5){
-        setRanking(prevRanking => prevRanking.slice(0,5));
-        handleModal('cancel');
+        setRanking(prevRanking => prevRanking.slice(0,5));        
+      }
+
+      if (ranking.some(item => item.name === 'newTime') &&
+        ranking.length === 5) {
+        handleModal('tenzies');
       }
   }
   },[ranking, tenzies]);
     
   // Change Modal state
-   function handleModal() {
+   function handleModal(button) {
     setShow(prevShow => !prevShow);
+    setButtonTypeClicked(button);
   }
 
   // held the dice
@@ -203,9 +211,10 @@ function App() {
           <StopWatch time={time}/>
           <button onClick={rollDices}>{(tenzies || loaded) ? 'New Game' : 'Roll'}</button>
         </div>
-        <h6 className="version">V 0.1.1b</h6>      
+        <h6 className="version">V1.0b</h6>      
       </div>
         <Ranking show={show} handleModal={handleModal}         
+          buttonTypeClicked={buttonTypeClicked} setUpdateRanking={setUpdateRanking} 
           ranking={ranking} setRanking={setRanking} />
     </main>
   );
